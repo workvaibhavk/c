@@ -1,0 +1,1284 @@
+# CM31203 Object Oriented Programming --- Missing Practical Programs
+
+Based on the syllabus supplied in the chat and the uploaded
+`bible_codes.txt`.
+
+**How to use:** Each numbered experiment is a separate C++ program. Copy
+only one program at a time into your compiler. These are simple,
+viva-friendly examples using `iostream`, with `<string>`/`<cstring>`
+where appropriate.
+
+## Practical 2 --- Structure and array of structures
+
+``` cpp
+#include <iostream>
+
+
+struct Student {
+    int roll;
+    char name[30];
+    float marks;
+};
+
+int main() {
+    Student s[3];
+
+    for (int i = 0; i < 3; i++) {
+        cout << "Enter roll, name and marks: ";
+        cin >> s[i].roll >> s[i].name >> s[i].marks;
+    }
+
+    cout << "\nStudent Details\n";
+    for (int i = 0; i < 3; i++) {
+        cout << s[i].roll << " " << s[i].name << " " << s[i].marks << '\n';
+    }
+    return 0;
+}
+```
+
+## Practical 3 --- Call by value
+
+``` cpp
+#include <iostream>
+
+
+void change(int x) {
+    x = 100;
+    cout << "Inside function: " << x << '\n';
+}
+
+int main() {
+    int a = 10;
+    change(a);
+    cout << "In main: " << a << '\n';
+    return 0;
+}
+```
+
+**Point:** The function receives a copy, so the original `a` remains
+`10`.
+
+## Practical 4 --- Call by reference
+
+``` cpp
+#include <iostream>
+
+
+void swapNumbers(int &a, int &b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int main() {
+    int x = 10, y = 20;
+    swapNumbers(x, y);
+    cout << "x = " << x << "\ny = " << y;
+    return 0;
+}
+```
+
+**Point:** Reference parameters are aliases for the original variables;
+their values change.
+
+## Practical 5 --- Function overloading
+
+``` cpp
+#include <iostream>
+
+
+int area(int side) {
+    return side * side;
+}
+
+int area(int length, int breadth) {
+    return length * breadth;
+}
+
+int main() {
+    cout << "Area of square = " << area(5) << '\n';
+    cout << "Area of rectangle = " << area(5, 3) << '\n';
+    return 0;
+}
+```
+
+**Point:** Same function name, different parameter lists. Return type
+alone cannot overload a function.
+
+## Practical 7 --- Array of objects
+
+``` cpp
+#include <iostream>
+
+
+class Student {
+    int roll;
+    float marks;
+public:
+    void input() {
+        cout << "Enter roll and marks: ";
+        cin >> roll >> marks;
+    }
+    void display() {
+        cout << "Roll: " << roll << ", Marks: " << marks << '\n';
+    }
+};
+
+int main() {
+    Student s[3];
+    for (int i = 0; i < 3; i++) s[i].input();
+
+    cout << "\nStudent records:\n";
+    for (int i = 0; i < 3; i++) s[i].display();
+    return 0;
+}
+```
+
+## Practical 9 --- Static data member and static member function
+
+``` cpp
+#include <iostream>
+
+
+class Student {
+    int roll;
+    static int count;
+public:
+    void input() {
+        cout << "Enter roll number: ";
+        cin >> roll;
+        count++;
+    }
+    void display() {
+        cout << "Roll: " << roll << '\n';
+    }
+    static void showCount() {
+        cout << "Objects entered: " << count << '\n';
+    }
+};
+
+int Student::count = 0;
+
+int main() {
+    Student s1, s2;
+    s1.input();
+    s2.input();
+    s1.display();
+    s2.display();
+    Student::showCount();
+    return 0;
+}
+```
+
+**Point:** One static variable is shared by all objects; a static
+function can be called using the class name.
+
+## Practical 13 --- String operations using predefined functions
+
+This version uses C-style character arrays and `<cstring>`.
+
+``` cpp
+#include <iostream>
+#include <cstring>
+
+
+int main() {
+    char a[100] = "Hello";
+    char b[100] = "World";
+    char joined[210];
+
+    strcpy(joined, a);
+    strcat(joined, b);
+    cout << "Concatenation: " << joined << '\n';
+    cout << "Comparison (0 means equal): " << strcmp(a, b) << '\n';
+
+    // Reverse using a loop; standard <cstring> has no portable strrev().
+    int n = strlen(text);
+    for (int i = n - 1; i >= 0; i--) cout << text[i];
+    cout << '\n';
+    return 0;
+}
+```
+
+**Note:** `strrev()` is compiler-specific and is not part of standard
+C++. Reversing with a loop is portable.
+
+## Practical 14 --- String operations without predefined string functions
+
+``` cpp
+#include <iostream>
+
+
+int main() {
+    char a[50] = "Hello";
+    char b[50] = "World";
+    char joined[100];
+    int i = 0, j = 0;
+
+    while (a[i] != '\0') {
+        joined[i] = a[i];
+        i++;
+    }
+    while (b[j] != '\0') {
+        joined[i] = b[j];
+        i++;
+        j++;
+    }
+    joined[i] = '\0';
+    cout << "Concatenation: " << joined << '\n';
+
+    int k = 0;
+    while (a[k] != '\0' && b[k] != '\0' && a[k] == b[k]) k++;
+    if (a[k] == b[k])
+        cout << "Strings are equal\n";
+    else
+        cout << "Strings are not equal\n";
+
+    char text[] = "computer";
+    char target = 'p';
+    int position = -1;
+    for (int x = 0; text[x] != '\0'; x++) {
+        if (text[x] == target) {
+            position = x;
+            break;
+        }
+    }
+    cout << "Position of p (starting from 0): " << position << '\n';
+
+    int length = 0;
+    while (text[length] != '\0') length++;
+    cout << "Reversed: ";
+    for (int x = length - 1; x >= 0; x--) cout << text[x];
+    cout << '\n';
+    return 0;
+}
+```
+
+## Practical 15 --- Single inheritance
+
+``` cpp
+#include <iostream>
+
+
+class Person {
+protected:
+    string name;
+public:
+    void inputName() {
+        cout << "Enter name: ";
+        cin >> name;
+    }
+};
+
+class Student : public Person {
+    int roll;
+public:
+    void inputRoll() {
+        cout << "Enter roll number: ";
+        cin >> roll;
+    }
+    void display() {
+        cout << "Name: " << name << "\nRoll: " << roll;
+    }
+};
+
+int main() {
+    Student s;
+    s.inputName();
+    s.inputRoll();
+    s.display();
+    return 0;
+}
+```
+
+## Practical 16 --- Multilevel inheritance
+
+``` cpp
+#include <iostream>
+
+
+class Person {
+protected:
+    string name;
+public:
+    void inputName() {
+        cout << "Enter name: ";
+        cin >> name;
+    }
+};
+
+class Student : public Person {
+protected:
+    int roll;
+public:
+    void inputRoll() {
+        cout << "Enter roll: ";
+        cin >> roll;
+    }
+};
+
+class Result : public Student {
+    float marks;
+public:
+    void inputMarks() {
+        cout << "Enter marks: ";
+        cin >> marks;
+    }
+    void display() {
+        cout << "Name: " << name << "\nRoll: " << roll
+             << "\nMarks: " << marks;
+    }
+};
+
+int main() {
+    Result r;
+    r.inputName();
+    r.inputRoll();
+    r.inputMarks();
+    r.display();
+    return 0;
+}
+```
+
+## Practical 17 --- Multiple inheritance
+
+``` cpp
+#include <iostream>
+
+
+class Academic {
+protected:
+    int marks;
+public:
+    void inputMarks() {
+        cout << "Enter academic marks: ";
+        cin >> marks;
+    }
+};
+
+class Sports {
+protected:
+    int score;
+public:
+    void inputScore() {
+        cout << "Enter sports score: ";
+        cin >> score;
+    }
+};
+
+class Result : public Academic, public Sports {
+public:
+    void display() {
+        cout << "Total score = " << marks + score;
+    }
+};
+
+int main() {
+    Result r;
+    r.inputMarks();
+    r.inputScore();
+    r.display();
+    return 0;
+}
+```
+
+## Practical 18 --- Virtual base class (diamond problem)
+
+``` cpp
+#include <iostream>
+
+
+class Person {
+public:
+    int id;
+};
+
+class Student : virtual public Person { };
+class Employee : virtual public Person { };
+
+class Intern : public Student, public Employee {
+public:
+    void display() {
+        cout << "ID = " << id;
+    }
+};
+
+int main() {
+    Intern x;
+    x.id = 101;
+    x.display();
+    return 0;
+}
+```
+
+**Point:** `virtual public Person` ensures `Intern` contains one shared
+`Person` base subobject rather than two copies.
+
+## Practical 19 --- Unary and binary operator overloading
+
+``` cpp
+#include <iostream>
+
+
+class Number {
+    int value;
+public:
+    Number(int v = 0) : value(v) { }
+
+    void operator-() {       // unary minus operator
+        value = -value;
+    }
+
+    Number operator+(const Number &n) {  // binary plus operator
+        return Number(value + n.value);
+    }
+
+    void display() const {
+        cout << value << '\n';
+    }
+};
+
+int main() {
+    Number a(10), b(20);
+    -a;
+    cout << "After unary minus: ";
+    a.display();
+
+    Number c = a + b;
+    cout << "After binary addition: ";
+    c.display();
+    return 0;
+}
+```
+
+## Practical 20 --- Operator overloading using a friend function
+
+``` cpp
+#include <iostream>
+
+
+class Number {
+    int value;
+public:
+    Number(int v = 0) : value(v) { }
+
+    friend Number operator+(const Number &, const Number &);
+    friend Number operator-(const Number &);
+    void display() const {
+        cout << value << '\n';
+    }
+};
+
+Number operator+(const Number &a, const Number &b) {
+    return Number(a.value + b.value);
+}
+
+Number operator-(const Number &a) {
+    return Number(-a.value);
+}
+
+int main() {
+    Number a(10), b(4);
+    Number c = a + b;
+    Number d = -a;
+    cout << "Binary addition: ";
+    c.display();
+    cout << "Unary minus: ";
+    d.display();
+    return 0;
+}
+```
+
+**Point:** A friend operator function is not a member function, but it
+can access private members.
+
+## Practical 21 --- `this` pointer
+
+``` cpp
+#include <iostream>
+
+
+class Number {
+    int value;
+public:
+    void setValue(int value) {
+        this->value = value;
+    }
+    void display() {
+        cout << "Value = " << this->value;
+    }
+};
+
+int main() {
+    Number n;
+    n.setValue(50);
+    n.display();
+    return 0;
+}
+```
+
+**Point:** `this` points to the current object. `this->value` means the
+object's data member, while `value` is the parameter.
+
+## Practical 22 --- Virtual function
+
+``` cpp
+#include <iostream>
+
+class Shape {
+public:
+    virtual void display() {
+        cout << "This is a shape\n";
+    }
+    virtual ~Shape() { }
+};
+
+class Circle : public Shape {
+public:
+    void display() override {
+        cout << "This is a circle\n";
+    }
+};
+
+int main() {
+    Circle c;
+    Shape *ptr = &c;
+    ptr->display();
+    return 0;
+}
+```
+
+**Point:** Because `display()` is virtual, the call through a base-class
+pointer runs the derived-class version.
+
+## Practical 23 --- Type conversion
+
+This program demonstrates basic-to-class, class-to-basic, and
+one-class-to-another conversion.
+
+``` cpp
+#include <iostream>
+
+
+class Distance {
+    float metres;
+public:
+    Distance(float m) : metres(m) { }  // basic type to class type
+
+    operator float() const {           // class type to basic type
+        return metres;
+    }
+
+    float getMetres() const {
+        return metres;
+    }
+};
+
+class Centimetres {
+    float cm;
+public:
+    Centimetres(const Distance &d) {   // class type to another class type
+        cm = d.getMetres() * 100;
+    }
+
+    void display() const {
+        cout << cm << " cm\n";
+    }
+};
+
+int main() {
+    Distance d = 2.5f;       // basic -> class
+    float metres = d;        // class -> basic
+    Centimetres c = d;       // class -> class
+
+    cout << "Metres = " << metres << '\n';
+    cout << "Converted to centimetres: ";
+    c.display();
+    return 0;
+}
+```
+
+## Practical 24A --- File processing
+
+``` cpp
+#include <iostream>
+#include <fstream>
+
+
+int main() {
+    ofstream out("sample.txt");
+    if (!out) {
+        cout << "Unable to open file for writing";
+        return 1;
+    }
+    out << "Object Oriented Programming\n";
+    out << "File handling practical\n";
+    out.close();
+
+    ifstream in("sample.txt");
+    if (!in) {
+        cout << "Unable to open file for reading";
+        return 1;
+    }
+
+    char line[200];
+    while (in.getline(line, 200)) {
+        cout << line << '\n';
+    }
+    in.close();
+    return 0;
+}
+```
+
+**Demonstrates:** opening, writing, reading and closing a text file. The
+file is created in the program's working directory.
+
+## Practical 24B --- Exception handling
+
+``` cpp
+#include <iostream>
+
+
+int main() {
+    int a, b;
+    cout << "Enter numerator and denominator: ";
+    cin >> a >> b;
+
+    try {
+        if (b == 0) {
+            throw b;
+        }
+        cout << "Result = " << static_cast<double>(a) / b;
+    }
+    catch (int) {
+        cout << "Exception: division by zero is not allowed";
+    }
+    return 0;
+}
+```
+
+**Demonstrates:** `try`, `throw` and `catch`. This handles the specific
+division-by-zero case.
+
+------------------------------------------------------------------------
+
+# Important notes before submitting
+
+1.  **Practical 1:** Your existing student input/output program can be
+    used if it meets your teacher's required input/output and variable
+    demonstration. The syllabus title is broad.
+2.  **Practical 6:** Your `student` class program is suitable for class
+    and objects.
+3.  **Practical 8:** Your `Time::sum(Time, Time)` program demonstrates
+    objects as function arguments.
+4.  **Practical 10:** Your `max(ABC, XYZ)` friend function is a suitable
+    friend-function example.
+5.  **Practical 11:** Your `NUMBER` class demonstrates a parameterized
+    constructor and destructor.
+6.  **Practical 12:** Your `complex` class has constructor overloading,
+    but a teacher may expect a specifically titled
+    constructor-overloading experiment.
+7.  **Practical 20:** Your `sum(complex, complex)` is a friend function,
+    but it is not operator overloading. Use the dedicated `operator+`
+    friend-function program above.
+8.  **Practical 24:** The supplied syllabus combines file processing and
+    exception handling under the last practical entry. Keep both
+    programs if your teacher expects both topics.
+
+**Portability note:** These examples use standard C++ features. The
+predefined-string practical intentionally avoids relying on non-standard
+`strrev()`.
+
+
+#include <iostream>
+
+class student {
+   private:
+     char name[50];
+     int age;
+
+   public:
+     void getdata(){
+        std::cout << "Enter student name: ";
+        std::cin >> name;
+        std::cout << "Enter student age: ";
+        std::cin >> age;
+     }  
+
+     void putdata(){
+        std::cout << "\nName: " << name << "\n" << "Age: " << age;
+     }
+};
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    student stud1;
+    stud1.getdata();
+    stud1.putdata();
+
+    return 0;
+}
+
+
+
+
+
+Hello World
+
+Enter student name: VaibhavK
+Enter student age: 17
+
+Name: VaibhavK
+Age: 17
+
+=== Code Execution Successful ===
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+#include <iostream>
+
+class student {
+   private:
+     char name[50];
+     int age;
+
+   public:
+     void getdata();
+     void putdata();
+};
+void student::getdata(){
+        std::cout << "Enter student name: ";
+        std::cin >> name;
+        std::cout << "Enter student age: ";
+        std::cin >> age;
+     }  
+void student::putdata(){
+        std::cout << "\nName: " << name << "\n" << "Age: " << age;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    student stud1;
+    stud1.getdata();
+    stud1.putdata();
+
+    return 0;
+}
+
+
+
+Hello World
+
+Enter student name: VaibhavK
+Enter student age: 17
+
+Name: VaibhavK
+Age: 17
+
+=== Code Execution Successful ===
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+#include <iostream>
+
+class employee {
+   private:
+     int emp_id;
+     char name[50];
+     int basic_salary;
+
+     int hra;
+     int da;
+     int ta;
+     int gross;
+
+   public:
+     void getdata();
+     void calcdata(int);
+     void putdata();
+};
+void employee::getdata(){
+        std::cout << "Enter employee id: ";
+        std::cin >> emp_id;
+        std::cout << "Enter employee name: ";
+        std::cin >> name;
+        std::cout << "Enter employee basic salary: ";
+        std::cin >> basic_salary;
+        calcdata(basic_salary);
+     }  
+void employee::calcdata(int basic_salaryy){
+    hra = (0.3)*basic_salaryy;
+    da = (1.4)*basic_salaryy;
+    ta = (0.1)*basic_salaryy;
+    gross=basic_salaryy+hra+da+ta;
+}     
+void employee::putdata(){
+        std::cout << "\nEmpId" << emp_id << "\nName: " << name << "\nBasic: " << basic_salary;
+        std::cout << "\nGross Salary: " << gross;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    employee emp1;
+    emp1.getdata();
+    emp1.putdata();
+
+    return 0;
+}
+
+
+Hello World
+
+Enter employee id: 001
+Enter employee name: ayushK
+Enter employee basic salary: 100000
+
+EmpId1
+Name: ayushK
+Basic: 100000
+Gross Salary: 280000
+
+=== Code Execution Successful ===
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+#include <iostream>
+
+class employee {
+   private:
+     int emp_id;
+     char name[50];
+     int basic_salary;
+
+     int hra;
+     int da;
+     int ta;
+     int gross;
+     
+     void calcdata(int);
+
+   public:
+     void getdata();
+     void putdata();
+};
+void employee::getdata(){
+        std::cout << "Enter employee id: ";
+        std::cin >> emp_id;
+        std::cout << "Enter employee name: ";
+        std::cin >> name;
+        std::cout << "Enter employee basic salary: ";
+        std::cin >> basic_salary;
+        calcdata(basic_salary);
+     }  
+void employee::calcdata(int basic_salaryy){
+    hra = (0.3)*basic_salaryy;
+    da = (1.4)*basic_salaryy;
+    ta = (0.1)*basic_salaryy;
+    gross=basic_salaryy+hra+da+ta;
+}     
+void employee::putdata(){
+        std::cout << "\nEmpId" << emp_id << "\nName: " << name << "\nBasic: " << basic_salary;
+        std::cout << "\nGross Salary: " << gross;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    employee emp1;
+    emp1.getdata();
+    emp1.putdata();
+
+    return 0;
+}
+
+Hello World
+
+Enter employee id: 001
+Enter employee name: vbk
+Enter employee basic salary: 2000
+
+EmpId1
+Name: vbk
+Basic: 2000
+Gross Salary: 5600
+
+=== Code Execution Successful ===
+
+------------------------------------------------------------------------------------------------
+
+// take 2,45 && 6,32 add and display
+#include <iostream>
+
+class Time {
+   private:
+     int hours;
+     int minutes;
+
+   public:
+     void gettime(int, int);
+     void sum(Time, Time);
+     void puttime();
+};
+void Time::gettime(int h, int m){
+       hours = h;
+       minutes = m;
+     }  
+void Time::sum(Time t1, Time t2){
+    minutes = t1.minutes + t2.minutes;
+    hours = minutes / 60.0;
+    minutes = minutes % 60;
+    hours = hours + t1.hours + t2.hours;
+}     
+void Time::puttime(){
+        std::cout << "\nHours: " << hours << "\nMinutes: " << minutes << "\n\n";
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    Time t1,t2,t3;
+    t1.gettime(2,45);
+    t2.gettime(3,35);
+    t3.sum(t1,t2);
+    t1.puttime();
+    t2.puttime();
+    t3.puttime();
+
+    return 0;
+}
+
+
+Hello World
+
+
+Hours: 2
+Minutes: 45
+
+
+Hours: 3
+Minutes: 35
+
+
+Hours: 6
+Minutes: 20
+
+
+
+=== Code Execution Successful ===
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+#include <iostream>
+
+class sample {
+   private:
+     int a;
+     int b;
+
+   public:
+    void setValue(const int x, const int y){
+        a = x;
+        b = y;
+    }
+    inline friend float mean(sample);
+};
+
+float mean(sample s){
+        return (s.a + s.b)/2.0;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    sample s1;
+    s1.setValue(10,20);
+    std::cout << mean(s1);
+
+    return 0;
+}
+
+Hello World
+
+15
+
+=== Code Execution Successful ===
+
+------------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+class XYZ;
+class ABC {
+   private:
+     int a;
+
+   public:
+    void setValue(const int x){
+        a = x;
+    }
+
+    inline friend int max(ABC, XYZ);
+};
+
+class XYZ {
+   private:
+     int x;
+
+   public:
+    void setValue(const int a){
+        x = a;
+    }
+
+    inline friend int max(ABC, XYZ);
+};
+
+int max(ABC a, XYZ x){
+    /*if(a.a > x.x) return a.a;
+    else if (x.x > a.a) return x.x;
+    else return 0;*/
+        return x.x > a.a ? x.x : a.a;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+    ABC a1;
+    XYZ x1;
+
+    a1.setValue(10);
+    x1.setValue(25);
+    std::cout << max(a1,x1);
+
+    return 0;
+}
+
+Hello World
+
+25
+
+=== Code Execution Successful ===
+
+----------------------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+int &max(int &a, int &x){
+        return x > a ? x : a;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+   int a = 25, b = 70;
+
+max(a,b) = 150;
+std::cout << a << "\t" << b;
+
+    return 0;
+}
+
+Hello World
+
+25	150
+
+=== Code Execution Successful ===
+
+----------------------------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+int &ref(int &a){
+        return a;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+   int a = 25, b = 70,temp;
+std::cout << a << "\t" << b << "\n";
+   ref(temp) = ref(a);
+   ref(a) = ref(b);
+   ref(b) = ref(temp);
+std::cout << a << "\t" << b;
+
+    return 0;
+}
+
+Hello World
+
+25	70
+70	25
+
+=== Code Execution Successful ===
+
+--------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+int &swap(int &a, int &b){
+        return a;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+   int a = 25, b = 70,temp=a;
+std::cout << a << "\t" << b << "\n";
+swap(a,b) = swap(b,a);
+swap(b,a) = swap(temp,a);
+std::cout << a << "\t" << b;
+
+    return 0;
+}
+
+Hello World
+
+25	70
+70	25
+
+=== Code Execution Successful ===
+
+--------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+int &swap(int &a, int &b, int &temp, int &refe){
+    temp = a;
+    a = b;
+    b = temp;
+        return refe;
+     }
+
+int main()
+{
+    std::cout<<"Hello World\n\n";
+   int a = 25, b = 70,temp, refe = 999;
+std::cout << a << "\t" << b << "\t" << temp << "\t" << refe << "\n" ;
+swap(a,b,temp,refe) = 500;
+std::cout << a << "\t" << b << "\t" << temp << "\t" << refe << "\n" ;
+    return 0;
+}
+
+Hello World
+
+25	70	0	999
+70	25	25	500
+
+
+=== Code Execution Successful ===
+
+--------------------------------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+class NUMBER {
+    private:
+    int xy;
+
+    public:
+    NUMBER (int x){
+        xy = x;
+    }
+
+    void display(){
+        std::cout << "X: " << xy;
+    }
+
+    ~NUMBER (){
+        std::cout << "\nByeee!";
+    }
+};
+
+int main()
+{
+  std::cout<<"Hello World\n\n";
+  NUMBER x1(100);
+  x1.display();
+  
+    return 0;
+}
+
+Hello World
+
+X: 100
+Byeee!
+
+=== Code Execution Successful ===
+
+------------------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+class complex{
+
+  private: 
+    float x, y;
+
+  public:
+    complex(){}
+    complex(float a){
+        x = y= a;
+    }
+    complex(float p, float q){
+        x = p;
+        y = q;
+    }
+
+    friend complex sum(complex, complex);
+    friend void display(complex);
+};
+
+complex sum(complex a, complex b){
+    complex c;
+    c.x = a.x + b.x;
+    c.y = a.y + b.y;
+    return c;
+}
+
+void display(complex z){
+    std::cout << z.x << " + i" << z.y << " \n";
+}
+
+int main()
+{
+  std::cout<<"Hello World\n\n";
+  complex A(2.5);
+  complex B(2.5, 8.9);
+  complex C;
+
+  C = sum(A,B);
+
+  display(A); display(B); display(C);
+  
+    return 0;
+}
+
+Hello World
+
+2.5 + i2.5 
+2.5 + i8.9 
+5 + i11.4 
+
+
+=== Code Execution Successful ===
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+
